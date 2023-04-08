@@ -3,28 +3,23 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("info")
-    .setDescription("Displays info about current song"),
+    .setName("skip")
+    .setDescription("Skips the current song"),
   run: async ({ client, interaction }) => {
     const queue = client.player.getQueue(interaction.guildId);
 
     if (!queue) {
       return await interaction.editReply("No songs in queue");
     }
-    let bar = queue.createProgressBar({
-      queue: false,
-      length: 19,
-    });
 
-    const song = queue.current;
+    const currentSong = queue.current;
 
+    queue.skip();
     await interaction.editReply({
       embeds: [
         new MessageEmbed()
-          .setThumbnail(song.thumbnail)
-          .setDescription(
-            `Currently playing [${song.title}](${song.url})\n\n` + bar
-          ),
+          .setDescription(`${currentSong.title} has been skipped!`)
+          .setThumbnail(currentSong.thumbnail),
       ],
     });
   },
