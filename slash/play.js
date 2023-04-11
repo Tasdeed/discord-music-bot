@@ -22,9 +22,11 @@ module.exports = {
         .setName("playlist")
         .setDescription("Loads a playlist")
         .addStringOption((option) =>
-          option.setName("url").setDescription("the playlist's url")
+          option
+            .setName("url")
+            .setDescription("the playlist's url")
+            .setRequired(true)
         )
-        .setRequired(true)
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -32,7 +34,7 @@ module.exports = {
         .setDescription("Search for songs")
         .addStringOption((option) =>
           option
-            .setName("searchWords")
+            .setName("search")
             .setDescription("search keywords")
             .setRequired(true)
         )
@@ -84,7 +86,7 @@ module.exports = {
         .setThumbnail(playlist.thumbnail)
         .setFooter({ text: `Duration: ${playlist.duration}` });
     } else if (interaction.options.getSubcommand() === "search") {
-      let url = interaction.options.getString("searchWords");
+      let url = interaction.options.getString("search");
       const result = await client.player.search(url, {
         requestedBy: interaction.user,
         searchEngine: QueryType.AUTO,
