@@ -40,7 +40,10 @@ module.exports = {
         )
     ),
   run: async ({ client, interaction }) => {
-    if (!interaction.member.voice.channel) {
+    const guild = client.guilds.cache.get(438833645537591307);
+    const member = guild.members.cache.get(interaction.member.user.id);
+    const voiceChannel = member.voice.channel;
+    if (!voiceChannel) {
       return interaction.editReply(
         "Please join a voice channel to use this command"
       );
